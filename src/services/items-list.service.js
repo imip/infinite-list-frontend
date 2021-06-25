@@ -7,7 +7,7 @@ const initOptions = {
     },
 };
 
-export const getItems = pageNumber => {
+export const getItems = async pageNumber => {
     return fetch(`${BACK_API}/items?_page=${pageNumber}&_limit=30`, initOptions)
         .then(response => {
             if (!response.ok) {

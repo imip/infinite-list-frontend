@@ -1,33 +1,20 @@
 import React, { useReducer, useState } from "react";
 import { Header, Footer, Banner } from "./components/layout";
 import { BasketContext, BannerContext } from "./contexts";
+import { ACTION } from "./constants";
+import { basketReducer } from "./reducers";
 import { List } from "./components/list";
 import styles from "./app.module.scss";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const reducer = (state, action) => {
-    const key = action.payload?.item;
-    switch (action.type) {
-        case "add":
-            return { ...state, [key]: state[key] + 1 || 1 };
-        case "clear":
-            return {};
-        case "remove":
-            delete state[key];
-            return { ...state };
-        default:
-            throw new Error("Not recognized action");
-    }
-};
-
 export const App = () => {
-    const [basketItems, manageBasketItems] = useReducer(reducer, {});
+    const [basketItems, manageBasketItems] = useReducer(basketReducer, {});
     const [bannerIsShown, setBannerIsShown] = useState(false);
 
     const submit = () => {
         toast.success("Votre panier a bien été validé");
-        manageBasketItems({ type: "clear" });
+        manageBasketItems({ type: ACTION.clear });
     };
 
     const showBanner = value => {

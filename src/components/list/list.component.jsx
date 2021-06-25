@@ -1,8 +1,10 @@
 import React, { useContext, useState, useEffect, useCallback } from "react";
 import { BasketContext, BannerContext } from "../../contexts";
+import { ACTION, ROW_HEIGHT } from "../../constants";
 import { List as VirtualizedList, AutoSizer } from "react-virtualized";
 import { getItems } from "../../services";
 import { ListItem } from "./list-item/list-item.component";
+import { toast } from "react-toastify";
 import styles from "./list.module.scss";
 
 // Pas besoin de render le composant, on peut mettre ces variables ici
@@ -16,25 +18,28 @@ export const List = () => {
     // Instanciation à ce niveau et pas en dessous sinon chaque item instanciera son clickAction...
     const clickAction = useCallback(
         itemId => {
-            basketContext.manageBasketItems({ type: "add", payload: { item: itemId } });
+            basketContext.manageBasketItems({ type: ACTION.add, payload: { item: itemId } });
         },
         [basketContext]
     );
 
     const removeAction = useCallback(
         itemId => {
-            basketContext.manageBasketItems({ type: "remove", payload: { item: itemId } });
+            basketContext.manageBasketItems({ type: ACTION.remove, payload: { item: itemId } });
         },
         [basketContext]
     );
 
-    const fetchData = () => {
+    const fetchData = async () => {
         isLoading = true;
-        getItems(currentPage).then(items => {
+        try {
+            const items = await getItems(currentPage);
             currentPage++;
             setData([...data, ...items]);
-            isLoading = false;
-        });
+        } catch {
+            toast.error("Une erreur est survenue");
+        }
+        isLoading = false;
     };
 
     useEffect(() => {
@@ -71,28 +76,29 @@ export const List = () => {
         }
     };
 
-    if (data.length) {
-        return (
-            <div className={styles.container}>
-                <AutoSizer>
-                    {({ width, height }) => {
-                        return (
-                            <div style={{ height, width }} onScroll={scrollChanged}>
-                                <VirtualizedList
-                                    onScroll={scrollChanged}
-                                    className={styles.list}
-                                    height={height}
-                                    rowCount={data.length}
-                                    rowHeight={50}
-                                    rowRenderer={rowRenderer}
-                                    width={width}
-                                />
-                            </div>
-                        );
-                    }}
-                </AutoSizer>
-            </div>
-        );
+    if (!data.length) {
+        return null;
     }
-    return null;
+
+    return (
+        <div className={styles.container}>
+            <AutoSizer>
+                {({ width, height }) => {
+                    return (
+                        <div style={{ height, width }} onScroll={scrollChanged}>
+                            <VirtualizedList
+                                onScroll={scrollChanged}
+                                className={styles.list}
+                                height={height}
+                                rowCount={data.length}
+                                rowHeight={ROW_HEIGHT}
+                                rowRenderer={rowRenderer}
+                                width={width}
+                            />
+                        </div>
+                    );
+                }}
+            </AutoSizer>
+        </div>
+    );
 };

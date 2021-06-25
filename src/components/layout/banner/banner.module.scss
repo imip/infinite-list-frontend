@@ -4,7 +4,7 @@
     height: 8rem;
     display: flex;
     width: 100%;
-    margin-top: 0px;
+    margin-top: 0;
     transition: margin-top 0.5s;
 
     img {
@@ -13,6 +13,6 @@
     }
 
     &.hidden {
-        margin-top: -150px;
+        margin-top: -10rem;
     }
 }

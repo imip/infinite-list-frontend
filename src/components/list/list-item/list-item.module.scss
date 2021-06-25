@@ -25,7 +25,7 @@
 
 .item-infos {
     display: flex;
-    padding: 0 25px;
+    padding: 0 1rem;
     height: 100%;
     width: 100%;
     flex-direction: column;
@@ -48,11 +48,11 @@
 
 .quantity {
     height: 100%;
-    width: 40px;
+    width: 2rem;
     color: $green;
     display: flex;
     justify-content: center;
     align-items: center;
     margin-left: auto;
-    font-size: 22px;
+    font-size: 1.4rem;
 }

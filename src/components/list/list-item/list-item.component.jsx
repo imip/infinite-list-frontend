@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import PropTypes from "prop-types";
 import styles from "./list-item.module.scss";
 import { BasketContext } from "../../../contexts";
+import { HAMMER_DIRECTION } from "../../../constants";
 import Hammer from "react-hammerjs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
@@ -37,7 +38,7 @@ export const ListItem = props => {
                         <FontAwesomeIcon icon={faTrashAlt} />
                     </div>
                 )}
-                <Hammer direction={"DIRECTION_RIGHT"} onTap={onClick} onSwipe={onSwipe}>
+                <Hammer direction={HAMMER_DIRECTION.right} onTap={onClick} onSwipe={onSwipe}>
                     <div className={styles["item-infos"]}>
                         <span className={styles["item-title"]}>{props.item.name}</span>
                         <span className={styles["item-description"]}>{props.item.description}</span>
