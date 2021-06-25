@@ -1,0 +1,12 @@
+@import "../../../static/stylesheets/variables";
+
+.header {
+    height: $header-height;
+    display: flex;
+    width: 100%;
+    background-color: black;
+    color: white;
+    z-index: 1;
+    align-items: center;
+    padding-left: 1rem;
+}
